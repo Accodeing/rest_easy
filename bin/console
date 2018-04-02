@@ -3,7 +3,7 @@
 require "bundler/setup"
 require "pry"
 
-require "rest-easy"
+require "rest_easy"
 
 ##
 # Starts a new copy of this script, replacing the current session.

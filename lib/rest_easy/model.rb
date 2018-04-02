@@ -8,6 +8,10 @@ module RestEasy
 
     attr_accessor :unsaved, :parent
 
+    def self.stub
+      new( schema.each_with_object({}){|(key, value),hash| hash[key] = value.options[:stub] if value.options[:stub] })
+    end
+
     def self.attribute( name, *args )
       define_method( "#{ name }?" ) do
         !send( name ).nil?
@@ -16,16 +20,14 @@ module RestEasy
       super
     end
 
-    def self.new( hash )
+    # TODO: There is a new meta API comming in the next release of dry-struct that will basically take care of this.
+    def self.new( hash = {} )
       begin
-        obj = preserve_meta_properties( hash ) do
-          super( hash )
-        end
+        obj = super( hash )
+        IceNine.deep_freeze( obj )
       rescue Dry::Struct::Error => e
         raise RestEasy::AttributeError.new e
       end
-
-      IceNine.deep_freeze( obj )
     end
 
     def unique_id
@@ -39,7 +41,6 @@ module RestEasy
       return self if new_attributes == old_attributes
 
       new_hash = new_attributes.delete_if{ |_, value| value.nil? }
-      new_hash[:new] = @new
       new_hash[:parent] = self
       self.class.new( new_hash )
     end
@@ -48,14 +49,6 @@ module RestEasy
     def ==( other )
       return false unless other.is_a? self.class
       self.to_hash == other.to_hash
-    end
-
-    def new?
-      @new
-    end
-
-    def saved?
-      @saved
     end
 
     def parent?
@@ -72,28 +65,6 @@ module RestEasy
       self.class.schema.keys.each_with_object({}) do |key, result|
         result[key] = self[key]
       end
-    end
-
-  private_class_method
-
-    # dry-types filter anything that isn't specified as an attribute on the
-    # class that is being instantiated. This wrapper preserves the meta
-    # properties we need to track object state during that initilisation and
-    # sets them on the object after dry-types is done with it.
-    def self.preserve_meta_properties( hash )
-      is_unsaved = hash.delete( :unsaved ){ true }
-      is_new = hash.delete( :new ){ true }
-      parent = hash.delete( :parent ){ nil }
-
-      obj = yield
-
-      # TODO: remove new, unsaved, saved
-      obj.instance_variable_set( :@unsaved, is_unsaved )
-      obj.instance_variable_set( :@saved, !is_unsaved )
-      obj.instance_variable_set( :@new, is_new )
-      obj.instance_variable_set( :@parent, parent )
-
-      return obj
     end
 
   private

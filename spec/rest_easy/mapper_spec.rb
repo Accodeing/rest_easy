@@ -20,25 +20,25 @@ describe RestEasy::Mapper do
 
   describe 'string' do
     include_examples 'identity mapper', :string do
-      let( :value ){ RestEasy::Types::Nullable::String[ 'test' ] }
+      let( :value ){ RestEasy::Types::String[ 'test' ] }
     end
   end
 
   describe 'int' do
     include_examples 'identity mapper', :int do
-      let( :value ){ RestEasy::Types::Nullable::Integer[ 1337 ] }
+      let( :value ){ RestEasy::Types::Integer[ 1337 ] }
     end
   end
 
   describe 'float' do
     include_examples 'identity mapper', :float do
-      let( :value ){ RestEasy::Types::Nullable::Float[ 13.37 ] }
+      let( :value ){ RestEasy::Types::Float[ 13.37 ] }
     end
   end
 
   describe 'boolean' do
     include_examples 'identity mapper', :boolean do
-      let( :value ){ RestEasy::Types::Nullable::Boolean[ false ] }
+      let( :value ){ RestEasy::Types::Boolean[ false ] }
     end
   end
 
@@ -102,55 +102,7 @@ describe RestEasy::Mapper do
 
   describe 'nilclass' do
     include_examples 'identity mapper', :nilclass do
-      let( :value ){ RestEasy::Types::Nullable::String[ nil ] }
-    end
-  end
-
-  describe 'AccountNumber' do
-    include_examples 'identity mapper', :account_number do
-      let( :value ){ RestEasy::Types::AccountNumber[ 1234 ] }
-    end
-  end
-
-  describe 'CountryCode' do
-    include_examples 'identity mapper', :country_code do
-      let( :value ){ RestEasy::Types::CountryCode[ 'SE' ] }
-    end
-  end
-
-  describe 'Currency' do
-    include_examples 'identity mapper', :currency do
-      let( :value ){ RestEasy::Types::Currency[ 'SEK' ] }
-    end
-  end
-
-  describe 'CustomerType' do
-    include_examples 'identity mapper', :customer_type do
-      let( :value ){ RestEasy::Types::CustomerType[ 'PRIVATE' ] }
-    end
-  end
-
-  describe 'DiscountType' do
-    include_examples 'identity mapper', :discount_type do
-      let( :value ){ RestEasy::Types::DiscountType[ 'PERCENT' ] }
-    end
-  end
-
-  describe 'Email' do
-    include_examples 'identity mapper', :email do
-      let( :value ){ RestEasy::Types::Email[ 'email@example.com' ] }
-    end
-  end
-
-  describe 'HouseWorkType' do
-    include_examples 'identity mapper', :house_work_type do
-      let( :value ){ RestEasy::Types::HouseWorkType[ 'CONSTRUCTION' ] }
-    end
-  end
-
-  describe 'VATType' do
-    include_examples 'identity mapper', :vat_type do
-      let( :value ){ RestEasy::Types::VATType[ 'SEVAT' ] }
+      let( :value ){ RestEasy::Types::String[ nil ] }
     end
   end
 

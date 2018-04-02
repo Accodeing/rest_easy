@@ -1,0 +1,12 @@
+require 'support/matchers/type/attribute_matcher'
+require 'support/matchers/type/type_matcher'
+require 'support/matchers/type/have_nullable_matcher'
+require 'support/matchers/type/enum_matcher'
+require 'support/matchers/type/numeric_matcher'
+
+require 'support/matchers/type/have_nullable_date_matcher'
+require 'support/matchers/type/require_attribute_matcher'
+require 'support/matchers/type/have_sized_string_matcher'
+require 'support/matchers/type/have_nullable_string_matcher'
+require 'support/matchers/type/have_sized_float_matcher'
+require 'support/matchers/type/have_sized_integer_matcher'

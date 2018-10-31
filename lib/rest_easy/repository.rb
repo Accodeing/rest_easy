@@ -1,16 +1,14 @@
-require 'httparty'
 require 'rest_easy/repository/request_handling'
 require 'rest_easy/repository/loaders'
 require 'rest_easy/repository/savers'
 
 module RestEasy
   class Repository
-    include HTTParty
     include RequestHandling
     include Loaders
     include Savers
 
-    HTTParty::Parser::SupportedFormats[ "text/html" ] = :json
+    # HTTParty::Parser::SupportedFormats[ "text/html" ] = :json
 
     DEFAULT_HEADERS = {
       'Content-Type' => 'application/json',

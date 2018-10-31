@@ -1,4 +1,5 @@
-class User < RestEasy::Model
+class User < RestEasy::ValidModel
+
   attribute :id, RestEasy::Types.new( Integer ) {
     unique_id
   }

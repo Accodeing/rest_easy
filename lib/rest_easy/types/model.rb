@@ -1,7 +1,7 @@
 module RestEasy
   module Types
     class Model < Dry::Struct
-      constructor_type(:schema)
+      transform_keys(&:to_sym)
 
       def initialize( input_attributes )
         if (missing_key = first_missing_required_key( input_attributes ))

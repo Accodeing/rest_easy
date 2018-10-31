@@ -20,6 +20,18 @@ module RestEasy
         end
       end
 
+      def required( options )
+        stub = options.delete( :stub )
+
+        @options[ :required ] = true
+        @options[ :stub ] = stub if stub
+      end
+
+      def controls( attribute, *conditions )
+        @options[ :controls ] = attribute
+        @options[ :control_conditions ] = conditions
+      end
+
       def method_missing( name, *values )
         @options[ name ] = case values.length
         when 0

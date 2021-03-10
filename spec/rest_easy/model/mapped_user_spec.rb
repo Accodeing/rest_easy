@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-require_relative '../../examples/mapped_user.rb'
+require 'examples/mapped_user.rb'
 
 describe MappedUser do
   let( :user ){ MappedUser.new( first_name: "Test", last_name: "Person" ) }
@@ -15,5 +15,8 @@ describe MappedUser do
   )}
   its( :to_api ){ is_expected.to eq(
     { first_name: "Test", last_name: "Person" }.to_json
+  )}
+  its( :attributes ){ is_expected.to eq(
+    { name: Types::String.optional }
   )}
 end

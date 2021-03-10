@@ -1,4 +1,5 @@
 ENV['RUBY_ENV'] = 'test'
+$LOAD_PATH << './'
 
 require 'rspec/its'
 require 'webmock/rspec'

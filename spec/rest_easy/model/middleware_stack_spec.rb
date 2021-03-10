@@ -1,5 +1,7 @@
 require 'spec_helper'
+
 require 'rest_easy/model'
+require 'rest_easy/mapper'
 require 'middleware'
 
 describe RestEasy::Model do
@@ -25,7 +27,6 @@ describe RestEasy::Model do
 
       after do
         Object.send( :remove_const, :Entity )
-        Object.send( :remove_const, :Types )
       end
 
       context 'created class' do
@@ -48,23 +49,17 @@ describe RestEasy::Model do
         end
 
         class Entity < RestEasy::Model
-          attribute :test, Types::Integer
+          attribute :value, Types::Integer
         end
 
-        class Add
-          def initialize( app, value )
-            @app   = app
-            @value = value
-          end
-
-          def call( env )
-            env[ :test ] = env[ :test ].to_i + @value
-            @app.call( env )
+        class Add < RestEasy::Mapper
+          def value( value )
+            value.to_i + @args[ :extra ]
           end
         end
 
         stack = Middleware::Builder.new do |stack|
-          stack.use Add, 5
+          stack.use Add, extra: 5
         end
 
         Entity.configure do |config|
@@ -74,21 +69,13 @@ describe RestEasy::Model do
 
       after do
         Object.send( :remove_const, :Entity )
-        Object.send( :remove_const, :Types )
         Object.send( :remove_const, :Add )
       end
 
-      context 'created class' do
-        subject{ Entity.new( test: '10' ) }
+      subject{ Entity.new( value: '10' ) }
 
-        it{ is_expected.to be_a Entity }
-      end
-
-      context 'processed attribute' do
-        subject{ Entity.new( test: '10' ).test }
-
-        it{ is_expected.to eq 15 }
-      end
+      it{ is_expected.to be_a Entity }
+      its( :value ){ is_expected.to eq 15 }
     end
   end
 end

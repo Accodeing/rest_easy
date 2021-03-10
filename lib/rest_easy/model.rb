@@ -7,7 +7,6 @@ module RestEasy
   class Model
     extend Dry::Configurable
 
-
     setting :mapper, reader: true do
       setting :from_api_to_model, reader: true
       setting :from_model_to_api, reader: true
@@ -15,6 +14,10 @@ module RestEasy
 
     class << self
       attr_accessor :attributes
+    end
+
+    def attributes
+      self.class.attributes || {}
     end
 
     def self.attribute( name, type = Undefined )
@@ -41,7 +44,7 @@ module RestEasy
     def initialize( **attributes )
       # Cant use a static class here since its attributes will carry over
       # between child classes
-      dynamic_class = Dry.Struct( self.class.attributes || {} )
+      dynamic_class = Dry.Struct( self.attributes )
       @state = dynamic_class.new( from_api_to_model( attributes ))
     end
 
